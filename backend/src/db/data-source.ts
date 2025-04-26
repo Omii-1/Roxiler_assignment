@@ -1,5 +1,9 @@
 import { DataSource } from "typeorm";
 import "reflect-metadata"
+import { User } from "../models/user.model";
+import { Store } from "../models/store.model";
+import { Rating } from "../models/rating.model";
+
 
 class Database {
 
@@ -23,7 +27,7 @@ class Database {
       port: this.postgres_PORT,
       username: this.postgres_USERNAME,
       password: this.postgres_PASSWORD,
-      entities: [],   // add models here
+      entities: [User, Store, Rating],   // add models here
       synchronize: this.NODE_ENV !== "prod",
       logging: false,
     })
