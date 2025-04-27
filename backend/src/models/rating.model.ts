@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, ManyToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { User } from "./user.model";
 import { Store } from "./store.model";
 
@@ -16,4 +16,10 @@ export class Rating {
 
     @ManyToOne(() => Store, (store) => store.ratings)
     store!: Store;
+
+    @CreateDateColumn()
+    createdAt!: Date;
+
+    @UpdateDateColumn()
+    updaedAt!: Date;
 }

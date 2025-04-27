@@ -33,7 +33,7 @@ class Database {
     })
 
     await this.dataSource.initialize().then(() => {
-      console.log("PostgreSQL Connection has been established successfully.");      
+      console.log("PostgreSQL Connection has been established successfully");      
 
     }).catch((error) => 
       console.log("Unable to connect to the postgreSQL database.", error)

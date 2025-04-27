@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { Rating } from "./rating.model"
 import { Store } from "./store.model"
 
@@ -34,5 +34,11 @@ export class User {
 
   @OneToMany(() => Rating, (rating) => rating.user)
   ratings!: Rating[];
+
+  @CreateDateColumn()
+  createdAt!: Date;
+
+  @UpdateDateColumn()
+  updaedAt!: Date;
   
 }
