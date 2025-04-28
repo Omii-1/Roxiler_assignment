@@ -4,17 +4,9 @@ import { User } from "../models/user.model";
 import { Store } from "../models/store.model";
 import { Rating } from "../models/rating.model";
 
-
 class Database {
 
   public dataSource: DataSource | undefined
-
-  private postgres_DB = process.env.POSTGRES_DB || ""
-  private postgres_HOST = process.env.POSTGRES_HOST || ""
-  private postgres_PORT = parseInt(process.env.POSTGRES_PORT || "5432", 10)
-  private postgres_USERNAME = process.env.POSTGRES_USERNAME || ""
-  private postgres_PASSWORD = process.env.POSTGRES_PASSWORD || ""
-  private NODE_ENV = process.env.NODE_ENV || ""
 
   constructor(){
   }
@@ -22,13 +14,13 @@ class Database {
   public async connectToPostgres() {
     this.dataSource = new DataSource({
       type: "postgres",
-      database: this.postgres_DB,
-      host: this.postgres_HOST,
-      port: this.postgres_PORT,
-      username: this.postgres_USERNAME,
-      password: this.postgres_PASSWORD,
-      entities: [User, Store, Rating],   // add models here
-      synchronize: this.NODE_ENV !== "prod",
+      database: process.env.POSTGRES_DB,
+      host: process.env.POSTGRES_HOST,
+      port: parseInt(process.env.POSTGRES_PORT || "5432", 10),
+      username: process.env.POSTGRES_USERNAME,
+      password: process.env.POSTGRES_PASSWORD ,
+      entities: [User, Store, Rating], 
+      synchronize: process.env.NODE_ENV !== "prod",
       logging: false,
     })
 
@@ -41,6 +33,13 @@ class Database {
     
   }
 
+  public getDataSource(): DataSource {
+    if (!this.dataSource) {
+      throw new Error("DataSource has not been initialized. Call connectToPostgres() first.");
+    }
+    return this.dataSource
+  }
+
 }
 
-export default Database
+export const database = new Database()

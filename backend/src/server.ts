@@ -1,8 +1,11 @@
-import express, { Application } from "express"
+import express, { Application, Request, Response} from "express"
 import cors from "cors"
 import * as dotenv from "dotenv"
 
-import Database from "./db/data-source"
+import { database } from "./config/data-source"
+import { initServices } from "./services/service"
+import { initControllers } from "./controllers/controller"
+import AuthRouter from "./routes/auth.routes"
 
 dotenv.config()
 
@@ -13,6 +16,7 @@ class App {
   constructor() {
     this.app = express()
     this.plugins()
+    this.routes()
   }
 
   protected plugins(): void {
@@ -25,12 +29,21 @@ class App {
     this.app.use(express.urlencoded({ extended: true }))
   }
 
+  protected routes(): void {
+    this.app.route("/").get((req: Request, res: Response) => {
+      res.send("welcome home")
+    })
+    this.app.use("/api/v1/auth", AuthRouter)
+  } 
+
 }
 
 const startServer = async () => {
 
-  const db = new Database()
-  await db.connectToPostgres()
+  await database.connectToPostgres()
+
+  initServices()
+  initControllers()
 
   const port = process.env.PORT || 6000
   const app = new App().app
